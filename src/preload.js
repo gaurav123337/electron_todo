@@ -5,6 +5,11 @@ const api = {
   deleteTask: (id) => ipcRenderer.invoke("tasks: deleteTask", id),
   markComplete: (params) => ipcRenderer.invoke("tasks: markComplete", params),
   getAllTasks: () => ipcRenderer.invoke("tasks: getAllTasks"),
+  onTasksChanged: (cb) => {
+    const handler = (_e, data) => cb(data);
+    ipcRenderer.on("tasks:changed", handler);
+    return () => ipcRenderer.removeListener("tasks:changed", handler);
+  },
 };
 contextBridge.exposeInMainWorld("api", api);
 

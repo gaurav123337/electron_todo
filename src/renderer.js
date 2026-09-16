@@ -22,6 +22,7 @@ const renderTask = async () => {
         id: task.id,
         completed: checkBox.checked ? 1 : 0,
       });
+      // sender's check state already updated; other windows will sync via tasks:changed event
     });
     li.appendChild(checkBox);
 
@@ -29,7 +30,7 @@ const renderTask = async () => {
     deleteBtn.textContent = "❌ Delete";
     deleteBtn.addEventListener("click", async () => {
       await window.api.deleteTask(task.id);
-      renderTask();
+      // no direct renderTask here — rely on broadcast so every window (including this one) re-renders exactly once via tasks:changed
     });
     li.appendChild(deleteBtn);
 
@@ -39,14 +40,27 @@ const renderTask = async () => {
 
 const handleAddTask = async () => {
   const title = taskInput.value.trim();
+  if (!title) return;
   await window.api.addTask(title);
   taskInput.value = "";
-  renderTask();
+  // no direct renderTask — broadcast will trigger it for all windows
 };
 
 addTaskBtn.addEventListener("click", handleAddTask);
+taskInput.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") handleAddTask();
+});
 
 renderTask();
+
+// ── SYNC: re-render whenever ANY window mutates tasks ──
+if (window.api?.onTasksChanged) {
+  window.api.onTasksChanged((payload) => {
+    // optional debug
+    // console.log("tasks:changed", payload);
+    renderTask();
+  });
+}
 
 // ──────────────────────────────────────────────
 //  Parent / Child / Multi-Instance renderer logic
