@@ -51,7 +51,9 @@ function createParentWindow() {
     webPreferences: { preload: path.join(__dirname, "preload.js") },
   });
   getLoadTarget(mainWindow, "parent");
-  mainWindow.webContents.openDevTools({ mode: "detach" });
+  // DevTools is NOT auto-opened — open manually with Ctrl+Shift+I (or F12) when you need it.
+  // To auto-open only in dev, uncomment next line:
+  // if (!app.isPackaged) mainWindow.webContents.openDevTools({ mode: "detach" });
   mainWindow.on("closed", () => {
     mainWindow = null;
     childWindows.clear();
