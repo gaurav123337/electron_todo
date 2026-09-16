@@ -5,6 +5,38 @@
     <title>Hello World!</title>
   </head>
   <body>
+    <div id="window-bar" style="background:#1a1a2e;color:#fff;padding:10px 14px;border-radius:10px;margin-bottom:16px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;">
+      <div>
+        <strong id="win-label">Loading window info…</strong>
+        <div id="win-details" style="font-size:12px;opacity:.85;margin-top:2px;"></div>
+      </div>
+      <span id="win-badge" style="background:#e94560;padding:4px 10px;border-radius:999px;font-size:12px;font-weight:700;"></span>
+    </div>
+
+    <div id="window-controls" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;">
+      <button id="btn-create-child" style="background:#0f3460;color:#fff;border:none;padding:8px 12px;border-radius:8px;cursor:pointer;">👶 Create Child Window</button>
+      <button id="btn-create-multi" style="background:#16213e;color:#fff;border:none;padding:8px 12px;border-radius:8px;cursor:pointer;">🪟 Create Multi-Instance Window</button>
+      <button id="btn-close-self" style="background:#533483;color:#fff;border:none;padding:8px 12px;border-radius:8px;cursor:pointer;">✖ Close This Window</button>
+      <button id="btn-focus-parent" style="background:#1a1a2e;color:#fff;border:1px solid #555;padding:8px 12px;border-radius:8px;cursor:pointer;">🎯 Focus Parent</button>
+    </div>
+
+    <details open style="margin-bottom:12px;background:#f4f4f8;border-radius:10px;padding:10px 14px;">
+      <summary style="cursor:pointer;font-weight:700;">📡 Inter-Window Messaging (Parent ↔ Child ↔ Multi)</summary>
+      <div style="display:flex;gap:8px;margin-top:10px;">
+        <input id="msg-input" placeholder="Type message to send…" style="flex:1;padding:8px;border-radius:8px;border:1px solid #ccc;" />
+        <button id="btn-broadcast" style="background:#e94560;color:#fff;border:none;padding:8px 10px;border-radius:8px;cursor:pointer;">Broadcast All</button>
+        <button id="btn-to-parent" style="background:#0f3460;color:#fff;border:none;padding:8px 10px;border-radius:8px;cursor:pointer;">↑ To Parent</button>
+        <button id="btn-to-children" style="background:#16213e;color:#fff;border:none;padding:8px 10px;border-radius:8px;cursor:pointer;">↓ To Children</button>
+      </div>
+      <div id="msg-log" style="margin-top:10px;max-height:140px;overflow:auto;background:#fff;border:1px solid #ddd;border-radius:8px;padding:8px;font-size:12px;white-space:pre-wrap;"></div>
+    </details>
+
+    <details style="margin-bottom:16px;background:#eef2ff;border-radius:10px;padding:10px 14px;">
+      <summary style="cursor:pointer;font-weight:700;">🗂 Open Windows</summary>
+      <div id="all-windows" style="font-size:12px;margin-top:8px;"></div>
+      <div style="font-size:11px;opacity:.7;margin-top:6px;">Parent = main window &middot; Child = parent-tied (closes with parent, always above parent) &middot; Multi = independent window (also single-instance lock: second app launch is blocked and focuses parent)</div>
+    </details>
+
     <h1>My todo list</h1>
     <input id="task-input" placeholder="Create task" />
     <button id="add_task_btn">+ Add task</button>
